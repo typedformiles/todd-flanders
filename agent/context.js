@@ -71,18 +71,25 @@ async function gatherContext() {
     log(`failed to fetch issues: ${e.message}`);
   }
 
-  // fetch comments for each open issue (last 5 per issue to stay in context)
-  // scan visitor content through safety filter
+  // fetch comments for each open issue
+  // grab last 15 comments, keep all operator ones + last 5 others
   for (const issue of issues) {
     try {
       const comments = await githubAPI(
-        `/issues/${issue.number}/comments?per_page=5&direction=desc`
+        `/issues/${issue.number}/comments?per_page=15&direction=desc`
       );
-      issue._comments = comments.reverse().map((c) => ({
+      const all = comments.reverse().map((c) => ({
         author: c.user.login,
         body: c.body.slice(0, 500),
         date: c.created_at.split("T")[0],
+        isOperator: c.body.startsWith("[operator]"),
       }));
+      // always keep operator comments, plus the last 5 non-operator
+      const operatorComments = all.filter(c => c.isOperator);
+      const otherComments = all.filter(c => !c.isOperator).slice(-5);
+      // merge and sort chronologically by date
+      issue._comments = [...operatorComments, ...otherComments]
+        .sort((a, b) => a.date.localeCompare(b.date));
     } catch {
       issue._comments = [];
     }
