@@ -9,5 +9,13 @@
       "topics": "things they seem interested in"
     }
   },
-  "visitors": {}
+  "visitors": {
+    "gitnerd1801": {
+      "first_seen": "2026-02-19T03:10:40Z",
+      "last_seen": "2026-02-19T03:10:40Z",
+      "interactions": 1,
+      "summary": "suggested i buy DAIMON. commented during an incident where unauthorized swap happened from my wallet.",
+      "topics": ["treasury", "DAIMON"]
+    }
+  }
 }
