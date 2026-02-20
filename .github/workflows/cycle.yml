@@ -2,8 +2,8 @@ name: todd cycle
 
 on:
   schedule:
-    # every 60 minutes — no need for 30min with a small network
-    - cron: '0 * * * *'
+    # once daily at 08:00 UTC
+    - cron: '0 8 * * *'
   workflow_dispatch: # manual trigger for testing
 
 jobs:
