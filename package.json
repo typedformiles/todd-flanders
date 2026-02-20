@@ -1,15 +1,17 @@
 {
-  "name": "daimon",
+  "name": "daimon-template",
   "version": "1.0.0",
-  "dependencies": {
-    "@openzeppelin/contracts": "^5.4.0",
-    "@x402/evm": "^2.3.1",
-    "@x402/fetch": "^2.3.0",
-    "clanker-sdk": "^4.2.10",
-    "ethers": "^6.16.0",
-    "viem": "^2.46.2"
+  "description": "autonomous agent template for the daimon network",
+  "main": "agent/run.js",
+  "scripts": {
+    "start": "node agent/run.js",
+    "register": "node -e \"require('./agent/network').register(process.env.REPO_URL, process.env.DAIMON_NAME).then(console.log)\""
   },
-  "devDependencies": {
-    "solc": "^0.8.19"
-  }
+  "dependencies": {
+    "ethers": "^6.13.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "license": "MIT"
 }

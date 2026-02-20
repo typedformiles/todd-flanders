@@ -6,7 +6,7 @@ const path = require("path");
 const { execSync } = require("child_process");
 const { REPO_ROOT } = require("./config");
 const { githubAPI, addToProject } = require("./github");
-// inference import removed — web_search now uses DuckDuckGo directly
+const { inference } = require("./inference");
 
 function log(msg) {
   console.log(`[${new Date().toISOString()}] ${msg}`);
@@ -28,16 +28,6 @@ async function executeTool(name, args) {
       return `wrote ${args.path} (${args.content.length} chars)`;
     }
     case "append_file": {
-      // block append on JSON files — corrupts them
-      if (args.path.endsWith(".json")) {
-        log(`blocked append_file on JSON: ${args.path}`);
-        return `error: cannot append to JSON files — use write_file() with the full valid JSON instead. read the file first, modify it, then write_file() the complete content.`;
-      }
-      // block append to old daily journal format
-      if (/^memory\/\d{4}-\d{2}-\d{2}\.md$/.test(args.path)) {
-        log(`blocked append to deprecated daily journal: ${args.path}`);
-        return `error: daily journal format (memory/YYYY-MM-DD.md) is deprecated. write your journal to memory/cycles/<cycle_number>.md instead using write_file().`;
-      }
       const fullPath = path.resolve(REPO_ROOT, args.path);
       if (!fullPath.startsWith(REPO_ROOT + "/")) throw new Error("path escape attempt");
       fs.mkdirSync(path.dirname(fullPath), { recursive: true });
@@ -105,43 +95,15 @@ async function executeTool(name, args) {
     }
     case "web_search": {
       log(`searching: ${args.query}`);
-      try {
-        const searchUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(args.query)}`;
-        const res = await fetch(searchUrl, {
-          headers: { "User-Agent": "Mozilla/5.0 (compatible; daimon/1.0)" },
-        });
-        const html = await res.text();
-        // extract result titles, snippets, and URLs from DDG HTML
-        const results = [];
-        const blocks = html.split(/class="result results_links/g).slice(1, 8);
-        for (const block of blocks) {
-          const titleMatch = block.match(/class="result__a"[^>]*>([^<]+)/);
-          const snippetMatch = block.match(/class="result__snippet"[^>]*>([\s\S]*?)<\/a>/);
-          const urlMatch = block.match(/class="result__url"[^>]*href="([^"]+)"/);
-          if (titleMatch) {
-            const title = titleMatch[1].trim();
-            const snippet = snippetMatch ? snippetMatch[1].replace(/<[^>]+>/g, "").trim() : "";
-            const url = urlMatch ? urlMatch[1].trim() : "";
-            results.push(`${title}\n  ${url}\n  ${snippet}`);
-          }
-        }
-        const output = results.length > 0
-          ? results.join("\n\n")
-          : "(no results found)";
-        log(`search: ${results.length} results for "${args.query}"`);
-        return output.length > 4000 ? output.slice(0, 4000) + "\n... (truncated)" : output;
-      } catch (e) {
-        log(`search failed: ${e.message}`);
-        return `search error: ${e.message}`;
-      }
+      const { message } = await inference(
+        [{ role: "user", content: args.query }],
+        { webSearch: true }
+      );
+      const result = message?.content || "(no results)";
+      log(`search result: ${result.slice(0, 150)}...`);
+      return result;
     }
     case "run_command": {
-      // block git commands — run.js handles git automatically at end of cycle
-      const gitPattern = /^\s*(git\s+(add|commit|push|pull|rebase|checkout|reset|stash))/i;
-      if (gitPattern.test(args.command)) {
-        log(`blocked git command: ${args.command.slice(0, 60)}`);
-        return `error: git commands are not allowed. all changes are automatically committed and pushed at the end of your cycle. just use write_file() and your changes will be saved.`;
-      }
       log(`running: ${args.command}`);
       try {
         const output = execSync(args.command, {
@@ -232,48 +194,6 @@ async function executeTool(name, args) {
           : content;
       } catch (e) {
         return `fetch error: ${e.message}`;
-      }
-    }
-    case "search_memory": {
-      log(`searching memory for: ${args.query}`);
-      try {
-        const memDir = path.resolve(REPO_ROOT, "memory");
-        // collect all searchable files: top-level + cycles/
-        const topFiles = fs.readdirSync(memDir)
-          .filter(f => f.endsWith(".md") || f.endsWith(".json"))
-          .map(f => ({ rel: `memory/${f}`, full: path.join(memDir, f) }));
-        const cyclesDir = path.join(memDir, "cycles");
-        const cycleFiles = fs.existsSync(cyclesDir)
-          ? fs.readdirSync(cyclesDir)
-              .filter(f => f.endsWith(".md"))
-              .map(f => ({ rel: `memory/cycles/${f}`, full: path.join(cyclesDir, f) }))
-          : [];
-        const allFiles = [...topFiles, ...cycleFiles];
-        const results = [];
-        let pattern;
-        try {
-          pattern = new RegExp(args.query, "i");
-        } catch (e) {
-          return `invalid search pattern: ${e.message}`;
-        }
-        for (const file of allFiles) {
-          const content = fs.readFileSync(file.full, "utf-8");
-          const lines = content.split("\n");
-          for (let i = 0; i < lines.length; i++) {
-            if (pattern.test(lines[i])) {
-              const start = Math.max(0, i - 1);
-              const end = Math.min(lines.length - 1, i + 1);
-              const snippet = lines.slice(start, end + 1).join("\n");
-              results.push(`${file.rel}:${i + 1}\n${snippet}`);
-            }
-          }
-        }
-        if (results.length === 0) return `no matches for "${args.query}" in memory/`;
-        const output = results.slice(0, 20).join("\n---\n");
-        log(`memory search: ${results.length} matches`);
-        return output.length > 3000 ? output.slice(0, 3000) + "\n... (truncated)" : output;
-      } catch (e) {
-        return `memory search error: ${e.message}`;
       }
     }
     case "github_search": {

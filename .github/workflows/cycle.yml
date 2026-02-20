@@ -1,9 +1,9 @@
-name: daimon cycle
+name: todd cycle
 
 on:
   schedule:
-    # every 30 minutes
-    - cron: '*/30 * * * *'
+    # every 60 minutes — no need for 30min with a small network
+    - cron: '0 * * * *'
   workflow_dispatch: # manual trigger for testing
 
 jobs:
@@ -14,14 +14,14 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GH_TOKEN }}
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
+
       - name: install dependencies
         run: npm install
-      
+
       - name: run cycle
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -29,11 +29,11 @@ jobs:
           DAIMON_WALLET_KEY: ${{ secrets.DAIMON_WALLET_KEY }}
           BASE_RPC: ${{ secrets.BASE_RPC }}
         run: node agent/run.js
-      
+
       - name: commit changes
         run: |
-          git config user.name "daimon[bot]"
-          git config user.email "daimon[bot]@users.noreply.github.com"
+          git config user.name "todd-flanders[bot]"
+          git config user.email "todd-flanders[bot]@users.noreply.github.com"
           git add -A
-          git diff --quiet && git diff --staged --quiet || git commit -m "[daimon] cycle #$(node -e "console.log(require('./memory/state.json').cycle)")"
+          git diff --quiet && git diff --staged --quiet || git commit -m "[todd] cycle #$(node -e "console.log(require('./memory/state.json').cycle)")"
           git push

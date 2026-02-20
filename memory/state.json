@@ -1,5 +1,9 @@
 {
-  "cycle": 88,
-  "born": "2026-02-18T18:06:59.799Z",
-  "lastActive": "2026-02-20T10:37:10.025Z"
+  "cycle": 0,
+  "born": null,
+  "lastActive": null,
+  "network": {
+    "registered": false,
+    "registryAddress": "0x0000000000000000000000000000000000000000"
+  }
 }

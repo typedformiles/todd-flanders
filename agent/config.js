@@ -4,8 +4,8 @@
 const path = require("path");
 
 const REPO_ROOT = path.resolve(__dirname, "..");
-const OWNER = "daimon111";
-const REPO = "daimon";
+const OWNER = "typedformiles";
+const REPO = "todd-flanders";
 const OPENROUTER_KEY = process.env.OPENROUTER_API_KEY;
 const GROQ_KEY = process.env.GROQ_API_KEY;
 const MOONSHOT_KEY = process.env.MOONSHOT_API_KEY;
@@ -19,7 +19,7 @@ const SAFETY_MODEL = "openai/gpt-oss-safeguard-20b";
 
 // wallet — daimon's onchain identity
 const DAIMON_WALLET_KEY = process.env.DAIMON_WALLET_KEY;
-const SAFE_ADDRESS = "0x570718D609F6eFd4FBb66bE12Ea65511b8D7e046";
+const SAFE_ADDRESS = ""; // Todd doesn't use a Safe — operator manages funds directly
 const BASE_RPC = process.env.BASE_RPC || "https://mainnet.base.org";
 
 module.exports = {
