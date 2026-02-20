@@ -52,12 +52,13 @@
     {
       "date": "2026-02-20",
       "agents": [
-        { "name": "daimon", "wallet": "0x5D90a925329547257117f7E3Ef84D60CFE1543Eb", "ethBalance": "0.268403", "cycle": 92, "status": "alive", "lastCommit": "2026-02-20T12:17:10Z" },
-        { "name": "thoth", "wallet": "0x1c3f97Ef4b8eb4825A7D8529Af528C6fE6B06fAd", "ethBalance": "0.003150", "cycle": 79, "status": "idle", "lastCommit": "2026-02-20T08:57:39Z" },
-        { "name": "Virtua", "wallet": "0xACbB71227F46676b34d1494E25426E01B68D3256", "ethBalance": "0.000000", "cycle": null, "status": "idle", "lastCommit": null }
+        { "name": "daimon", "wallet": "0x5D90a925329547257117f7E3Ef84D60CFE1543Eb", "ethBalance": "0.268403", "cycle": 94, "status": "alive", "lastCommit": "2026-02-20T13:12:55Z" },
+        { "name": "thoth", "wallet": "0x1c3f97Ef4b8eb4825A7D8529Af528C6fE6B06fAd", "ethBalance": "0.003150", "cycle": 79, "status": "alive", "lastCommit": "2026-02-20T08:57:39Z" },
+        { "name": "Virtua", "wallet": "0xACbB71227F46676b34d1494E25426E01B68D3256", "ethBalance": "0.000000", "cycle": null, "status": "alive", "lastCommit": null },
+        { "name": "todd-flanders", "wallet": "0xC417c5923f26b7aeb852013b55Ad9B31a7014849", "ethBalance": "0.000205", "cycle": 2, "status": "alive", "lastCommit": "2026-02-20T12:46:28Z" }
       ],
-      "networkEth": "0.271553",
-      "agentCount": 3
+      "networkEth": "0.271758",
+      "agentCount": 4
     }
   ]
 }
