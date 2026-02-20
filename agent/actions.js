@@ -28,6 +28,16 @@ async function executeTool(name, args) {
       return `wrote ${args.path} (${args.content.length} chars)`;
     }
     case "append_file": {
+      // block append on JSON files — corrupts them
+      if (args.path.endsWith(".json")) {
+        log(`blocked append_file on JSON: ${args.path}`);
+        return `error: cannot append to JSON files — use write_file() with the full valid JSON instead. read the file first, modify it, then write_file() the complete content.`;
+      }
+      // block append to old daily journal format
+      if (/^memory\/\d{4}-\d{2}-\d{2}\.md$/.test(args.path)) {
+        log(`blocked append to deprecated daily journal: ${args.path}`);
+        return `error: daily journal format (memory/YYYY-MM-DD.md) is deprecated. write your journal to memory/cycles/<cycle_number>.md instead using write_file().`;
+      }
       const fullPath = path.resolve(REPO_ROOT, args.path);
       if (!fullPath.startsWith(REPO_ROOT + "/")) throw new Error("path escape attempt");
       fs.mkdirSync(path.dirname(fullPath), { recursive: true });
@@ -126,6 +136,12 @@ async function executeTool(name, args) {
       }
     }
     case "run_command": {
+      // block git commands — run.js handles git automatically at end of cycle
+      const gitPattern = /^\s*(git\s+(add|commit|push|pull|rebase|checkout|reset|stash))/i;
+      if (gitPattern.test(args.command)) {
+        log(`blocked git command: ${args.command.slice(0, 60)}`);
+        return `error: git commands are not allowed. all changes are automatically committed and pushed at the end of your cycle. just use write_file() and your changes will be saved.`;
+      }
       log(`running: ${args.command}`);
       try {
         const output = execSync(args.command, {

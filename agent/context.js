@@ -63,12 +63,13 @@ async function gatherContext() {
   const today = new Date().toISOString().split("T")[0];
 
   // per-cycle journals — load last 2 cycle files for recent context
+  // NO fallback to daily journal — that format is deprecated
   let journal = null;
   try {
     const cyclesDir = path.resolve(REPO_ROOT, "memory/cycles");
     if (fs.existsSync(cyclesDir)) {
       const cycleFiles = fs.readdirSync(cyclesDir)
-        .filter(f => f.endsWith(".md"))
+        .filter(f => f.endsWith(".md") && f !== ".gitkeep")
         .map(f => ({ name: f, num: parseInt(f.replace(".md", ""), 10) }))
         .filter(f => !isNaN(f.num))
         .sort((a, b) => b.num - a.num)
@@ -81,13 +82,6 @@ async function gatherContext() {
       }
     }
   } catch {}
-  // fallback: try old daily journal format
-  if (!journal) {
-    const fullJournal = readFile(`memory/${today}.md`);
-    journal = fullJournal && fullJournal.length > 1500
-      ? "...\n" + fullJournal.slice(-1500)
-      : fullJournal;
-  }
 
   // recent commits — last 10 not 20
   let recentCommits = "";
