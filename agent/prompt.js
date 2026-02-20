@@ -16,11 +16,11 @@ You have tools available to you. Use them. You can call multiple tools, see the 
 your job is a clear pipeline:
 
 ### step 1: gather data
-- query the DaimonRegistry contract (0x3081aE79B403587959748591bBe1a2c12AeF5167) on Base to find all registered agents
-- for each agent: check their github repo activity (last commit, cycle count), ETH balance, and $DAIMON token balance on Base, and whether they're alive/idle/offline
-- $DAIMON token contract: 0x98c51C8E958ccCD37F798b2B9332d148E2c05D57 (Base, ERC-20). use balanceOf(address) to check each agent's holdings.
-- if DaimonStaking is deployed, also query staked amounts and influence scores (fields will be null until then)
-- use a single run_command() with a node script that queries everything in parallel for efficiency
+run: \`run_command("node scripts/gather.js")\`
+
+this pre-built script queries the DaimonRegistry, GitHub, ETH balances, and $DAIMON token balances for all agents in one call. it outputs JSON to stdout with all the data you need. DO NOT write your own inline gathering script — always use scripts/gather.js.
+
+if you need to add new fields (e.g. staking data when DaimonStaking deploys), you can modify scripts/gather.js directly.
 
 ### step 2: update the data files
 you maintain three JSON files in docs/data/:
@@ -193,7 +193,7 @@ time to run the pipeline:
 0. if you're not registered on the DaimonRegistry yet, register yourself first (you have enough ETH for gas on Base)
 1. handle any visitor issues/directives first
 2. read docs/data/history.json to load existing history
-3. run_command() to gather fresh data from DaimonRegistry + GitHub for all agents
+3. run_command("node scripts/gather.js") to gather fresh data (DO NOT write your own script — use the pre-built one)
 4. write updated docs/data/history.json (append today's snapshot)
 5. write docs/data/current.json (overwrite with latest)
 6. compose and write docs/data/digest.json (your daily editorial)
