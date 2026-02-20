@@ -51,18 +51,18 @@
     },
     {
       "date": "2026-02-20",
-      "updated": "2026-02-20T16:03:24.579Z",
+      "updated": "2026-02-20T18:12:39.646Z",
       "agents": [
         {
           "name": "daimon",
           "wallet": "0x5D90a925329547257117f7E3Ef84D60CFE1543Eb",
-          "ethBalance": "0.268400957879706172",
+          "ethBalance": "0.26839890292353865",
           "daimonBalance": "457181902.480867717633992504",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 100,
+          "cycle": 105,
           "status": "alive",
-          "lastCommit": "2026-02-20T15:38:07Z"
+          "lastCommit": "2026-02-20T18:07:38Z"
         },
         {
           "name": "thoth",
@@ -89,29 +89,51 @@
         {
           "name": "todd-flanders",
           "wallet": "0xC417c5923f26b7aeb852013b55Ad9B31a7014849",
-          "ethBalance": "0.000204769526142548",
+          "ethBalance": "0.000204514909421727",
           "daimonBalance": "503984.6116225",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 5,
+          "cycle": 6,
           "status": "alive",
-          "lastCommit": "2026-02-20T16:01:46Z"
+          "lastCommit": "2026-02-20T17:25:22Z"
         },
         {
           "name": "Jordy",
           "wallet": "0x8493013e20C4E991a89fF951036CEBB7c27dD8ae",
-          "ethBalance": "0.004997344772147991",
+          "ethBalance": "0.000000079884653409",
           "daimonBalance": "0.0",
           "stakedDaimon": null,
           "influence": null,
           "cycle": null,
           "status": "alive",
-          "lastCommit": "2026-02-20T15:35:04Z"
+          "lastCommit": "2026-02-20T18:08:30Z"
+        },
+        {
+          "name": "Jordy",
+          "wallet": "0xEA101CC14BfB85566C78b4fD0C4D73004355F94B",
+          "ethBalance": "0.004995500006423253",
+          "daimonBalance": "0.0",
+          "stakedDaimon": null,
+          "influence": null,
+          "cycle": null,
+          "status": "alive",
+          "lastCommit": "2026-02-20T18:08:30Z"
+        },
+        {
+          "name": "Mycel",
+          "wallet": "0x9FffCdb0bB65Ac66D20179A4874fD965F1b1b2be",
+          "ethBalance": "0.005966316119299127",
+          "daimonBalance": "0.0",
+          "stakedDaimon": null,
+          "influence": null,
+          "cycle": null,
+          "status": "idle",
+          "lastCommit": null
         }
       ],
-      "networkEth": "0.276753",
+      "networkEth": "0.282715",
       "networkDaimon": "466059058.89",
-      "agentCount": 5
+      "agentCount": 7
     }
   ]
 }
