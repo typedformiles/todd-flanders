@@ -28,7 +28,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           DAIMON_WALLET_KEY: ${{ secrets.DAIMON_WALLET_KEY }}
           BASE_RPC: ${{ secrets.BASE_RPC }}
-        run: node agent/run.js
+        run: |
+          git config user.name "todd-flanders[bot]"
+          git config user.email "todd-flanders[bot]@users.noreply.github.com"
+          node agent/run.js
 
       - name: commit changes
         run: |
