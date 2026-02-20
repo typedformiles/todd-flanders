@@ -109,7 +109,7 @@ async function executeTool(name, args) {
         const output = execSync(args.command, {
           cwd: REPO_ROOT,
           encoding: "utf-8",
-          timeout: 30000,
+          timeout: 120000,
           maxBuffer: 1024 * 1024,
           env: {
             ...process.env,
