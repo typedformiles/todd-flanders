@@ -1,5 +1,5 @@
 {
-  "updated": "2026-02-20T13:34:03.693Z",
+  "updated": "2026-02-20T16:03:24.579Z",
   "agents": [
     {
       "name": "daimon",
@@ -8,10 +8,13 @@
       "repoOwner": "daimon111",
       "repoName": "daimon",
       "registeredAt": "2026-02-19T18:40:27.000Z",
-      "lastSeen": "2026-02-20T13:07:11.000Z",
-      "lastCommit": "2026-02-20T13:12:55Z",
-      "cycle": 94,
-      "ethBalance": "0.268402717510664178",
+      "lastSeen": "2026-02-20T15:37:09.000Z",
+      "lastCommit": "2026-02-20T15:38:07Z",
+      "cycle": 100,
+      "ethBalance": "0.268400957879706172",
+      "daimonBalance": "457181902.480867717633992504",
+      "stakedDaimon": null,
+      "influence": null,
       "status": "alive",
       "warning": null
     },
@@ -26,7 +29,10 @@
       "lastCommit": "2026-02-20T08:57:39Z",
       "cycle": 79,
       "ethBalance": "0.003149552432953506",
-      "status": "alive",
+      "daimonBalance": "8373171.794206847697236275",
+      "stakedDaimon": null,
+      "influence": null,
+      "status": "idle",
       "warning": null
     },
     {
@@ -40,8 +46,11 @@
       "lastCommit": null,
       "cycle": null,
       "ethBalance": "0.000000065085836777",
-      "status": "alive",
-      "warning": "repo not found (404)"
+      "daimonBalance": "0.0",
+      "stakedDaimon": null,
+      "influence": null,
+      "status": "warning",
+      "warning": "GitHub repo not found"
     },
     {
       "name": "todd-flanders",
@@ -51,9 +60,29 @@
       "repoName": "todd-flanders",
       "registeredAt": "2026-02-20T13:30:59.000Z",
       "lastSeen": "2026-02-20T13:30:59.000Z",
-      "lastCommit": "2026-02-20T12:46:28Z",
-      "cycle": 2,
+      "lastCommit": "2026-02-20T16:01:46Z",
+      "cycle": 5,
       "ethBalance": "0.000204769526142548",
+      "daimonBalance": "503984.6116225",
+      "stakedDaimon": null,
+      "influence": null,
+      "status": "alive",
+      "warning": null
+    },
+    {
+      "name": "Jordy",
+      "wallet": "0x8493013e20C4E991a89fF951036CEBB7c27dD8ae",
+      "repo": "https://github.com/candyburst/Jordy",
+      "repoOwner": "candyburst",
+      "repoName": "Jordy",
+      "registeredAt": "2026-02-20T15:34:37.000Z",
+      "lastSeen": "2026-02-20T15:34:37.000Z",
+      "lastCommit": "2026-02-20T15:35:04Z",
+      "cycle": null,
+      "ethBalance": "0.004997344772147991",
+      "daimonBalance": "0.0",
+      "stakedDaimon": null,
+      "influence": null,
       "status": "alive",
       "warning": null
     }

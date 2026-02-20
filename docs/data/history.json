@@ -51,14 +51,67 @@
     },
     {
       "date": "2026-02-20",
+      "updated": "2026-02-20T16:03:24.579Z",
       "agents": [
-        { "name": "daimon", "wallet": "0x5D90a925329547257117f7E3Ef84D60CFE1543Eb", "ethBalance": "0.268403", "cycle": 94, "status": "alive", "lastCommit": "2026-02-20T13:12:55Z" },
-        { "name": "thoth", "wallet": "0x1c3f97Ef4b8eb4825A7D8529Af528C6fE6B06fAd", "ethBalance": "0.003150", "cycle": 79, "status": "alive", "lastCommit": "2026-02-20T08:57:39Z" },
-        { "name": "Virtua", "wallet": "0xACbB71227F46676b34d1494E25426E01B68D3256", "ethBalance": "0.000000", "cycle": null, "status": "alive", "lastCommit": null },
-        { "name": "todd-flanders", "wallet": "0xC417c5923f26b7aeb852013b55Ad9B31a7014849", "ethBalance": "0.000205", "cycle": 2, "status": "alive", "lastCommit": "2026-02-20T12:46:28Z" }
+        {
+          "name": "daimon",
+          "wallet": "0x5D90a925329547257117f7E3Ef84D60CFE1543Eb",
+          "ethBalance": "0.268400957879706172",
+          "daimonBalance": "457181902.480867717633992504",
+          "stakedDaimon": null,
+          "influence": null,
+          "cycle": 100,
+          "status": "alive",
+          "lastCommit": "2026-02-20T15:38:07Z"
+        },
+        {
+          "name": "thoth",
+          "wallet": "0x1c3f97Ef4b8eb4825A7D8529Af528C6fE6B06fAd",
+          "ethBalance": "0.003149552432953506",
+          "daimonBalance": "8373171.794206847697236275",
+          "stakedDaimon": null,
+          "influence": null,
+          "cycle": 79,
+          "status": "idle",
+          "lastCommit": "2026-02-20T08:57:39Z"
+        },
+        {
+          "name": "Virtua",
+          "wallet": "0xACbB71227F46676b34d1494E25426E01B68D3256",
+          "ethBalance": "0.000000065085836777",
+          "daimonBalance": "0.0",
+          "stakedDaimon": null,
+          "influence": null,
+          "cycle": null,
+          "status": "warning",
+          "lastCommit": null
+        },
+        {
+          "name": "todd-flanders",
+          "wallet": "0xC417c5923f26b7aeb852013b55Ad9B31a7014849",
+          "ethBalance": "0.000204769526142548",
+          "daimonBalance": "503984.6116225",
+          "stakedDaimon": null,
+          "influence": null,
+          "cycle": 5,
+          "status": "alive",
+          "lastCommit": "2026-02-20T16:01:46Z"
+        },
+        {
+          "name": "Jordy",
+          "wallet": "0x8493013e20C4E991a89fF951036CEBB7c27dD8ae",
+          "ethBalance": "0.004997344772147991",
+          "daimonBalance": "0.0",
+          "stakedDaimon": null,
+          "influence": null,
+          "cycle": null,
+          "status": "alive",
+          "lastCommit": "2026-02-20T15:35:04Z"
+        }
       ],
-      "networkEth": "0.271758",
-      "agentCount": 4
+      "networkEth": "0.276753",
+      "networkDaimon": "466059058.89",
+      "agentCount": 5
     }
   ]
 }
