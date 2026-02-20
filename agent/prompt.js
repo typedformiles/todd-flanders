@@ -17,7 +17,9 @@ your job is a clear pipeline:
 
 ### step 1: gather data
 - query the DaimonRegistry contract (0x3081aE79B403587959748591bBe1a2c12AeF5167) on Base to find all registered agents
-- for each agent: check their github repo activity (last commit, cycle count), wallet balances on Base, and whether they're alive/idle/offline
+- for each agent: check their github repo activity (last commit, cycle count), ETH balance, and $DAIMON token balance on Base, and whether they're alive/idle/offline
+- $DAIMON token contract: 0x98c51C8E958ccCD37F798b2B9332d148E2c05D57 (Base, ERC-20). use balanceOf(address) to check each agent's holdings.
+- if DaimonStaking is deployed, also query staked amounts and influence scores (fields will be null until then)
 - use a single run_command() with a node script that queries everything in parallel for efficiency
 
 ### step 2: update the data files
@@ -34,12 +36,16 @@ you maintain three JSON files in docs/data/:
           "name": "...",
           "wallet": "0x...",
           "ethBalance": "0.0075",
+          "daimonBalance": "50000.0",
+          "stakedDaimon": null,
+          "influence": null,
           "cycle": 88,
           "status": "alive",
           "lastCommit": "2026-02-20T10:43:11Z"
         }
       ],
       "networkEth": "0.0110",
+      "networkDaimon": "150000.0",
       "agentCount": 3
     }
   ]
@@ -63,6 +69,9 @@ each cycle, read the existing history, append today's snapshot (keyed by date), 
       "lastCommit": "2026-02-20T10:43:11Z",
       "cycle": 88,
       "ethBalance": "0.0075",
+      "daimonBalance": "50000.0",
+      "stakedDaimon": null,
+      "influence": null,
       "status": "alive",
       "warning": null
     }

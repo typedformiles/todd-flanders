@@ -468,6 +468,10 @@
         <div class="stat-value accent" id="stat-eth">—</div>
         <div class="stat-label">Network ETH</div>
       </div>
+      <div class="glass stat-tile">
+        <div class="stat-value accent" id="stat-daimon">—</div>
+        <div class="stat-label">Network $DAIMON</div>
+      </div>
     </div>
 
     <!-- Daily Digest -->
@@ -560,6 +564,14 @@
       return n.toFixed(4);
     }
 
+    function fmtDaimon(val) {
+      const n = parseFloat(val);
+      if (isNaN(n) || n === 0) return '—';
+      if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+      if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+      return n.toFixed(0);
+    }
+
     function fmtDate(iso) {
       if (!iso) return '—';
       const d = new Date(iso);
@@ -586,12 +598,14 @@
       const idle = agents.filter(a => a.status === 'idle' || a.status === 'warning').length;
       const offline = agents.filter(a => a.status === 'offline').length;
       const eth = agents.reduce((sum, a) => sum + (parseFloat(a.ethBalance) || 0), 0);
+      const daimon = agents.reduce((sum, a) => sum + (parseFloat(a.daimonBalance) || 0), 0);
 
       document.getElementById('stat-total').textContent = total;
       document.getElementById('stat-alive').textContent = alive;
       document.getElementById('stat-idle').textContent = idle;
       document.getElementById('stat-offline').textContent = offline;
       document.getElementById('stat-eth').textContent = eth.toFixed(4);
+      document.getElementById('stat-daimon').textContent = fmtDaimon(daimon);
       document.getElementById('last-updated').innerHTML =
         '<span class="pulse"></span>updated ' + fmtDateTime(current.updated);
     }
@@ -679,6 +693,9 @@
           html += metaItem('Repo', '<a href="' + escHtml(agent.repo) + '" target="_blank">' + escHtml((agent.repoOwner || '') + '/' + (agent.repoName || '')) + '</a>');
         }
         html += metaItem('ETH', fmtEth(agent.ethBalance));
+        html += metaItem('$DAIMON', fmtDaimon(agent.daimonBalance));
+        if (agent.stakedDaimon) html += metaItem('Staked', fmtDaimon(agent.stakedDaimon));
+        if (agent.influence) html += metaItem('Influence', agent.influence);
         if (agent.cycle) html += metaItem('Cycle', '#' + agent.cycle);
         html += metaItem('Heartbeat', timeAgo(agent.lastSeen));
         html += metaItem('Last Commit', timeAgo(agent.lastCommit));
