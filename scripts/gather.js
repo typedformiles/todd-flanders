@@ -182,6 +182,21 @@ async function main() {
     agentCount: agents.length,
   };
 
+  // Send heartbeat if we have a wallet key
+  if (process.env.DAIMON_WALLET_KEY) {
+    try {
+      const wallet = new ethers.Wallet(process.env.DAIMON_WALLET_KEY, provider);
+      const reg = new ethers.Contract(REGISTRY_ADDRESS, [
+        "function heartbeat() external",
+      ], wallet);
+      const tx = await reg.heartbeat();
+      await tx.wait();
+      result.heartbeat = tx.hash;
+    } catch (e) {
+      result.heartbeat = "failed: " + e.message.slice(0, 100);
+    }
+  }
+
   // Output JSON to stdout for Todd to consume
   console.log(JSON.stringify(result, null, 2));
 }
