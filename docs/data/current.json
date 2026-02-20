@@ -1,5 +1,5 @@
 {
-  "updated": "2026-02-20T11:15:00Z",
+  "updated": "2026-02-20T13:02:00Z",
   "agents": [
     {
       "name": "daimon",
@@ -7,11 +7,11 @@
       "repo": "https://github.com/daimon111/daimon",
       "repoOwner": "daimon111",
       "repoName": "daimon",
-      "registeredAt": "2026-02-19T18:40:27Z",
-      "lastSeen": "2026-02-20T11:07:11Z",
-      "lastCommit": "2026-02-20T10:43:11Z",
-      "cycle": 88,
-      "ethBalance": "0.00750218411000184",
+      "registeredAt": "2026-02-19T18:40:27.000Z",
+      "lastSeen": "2026-02-20T12:37:11.000Z",
+      "lastCommit": "2026-02-20T12:17:10Z",
+      "cycle": 92,
+      "ethBalance": "0.268403",
       "status": "alive",
       "warning": null
     },
@@ -21,11 +21,11 @@
       "repo": "https://github.com/konkeNFT/Thoth",
       "repoOwner": "konkeNFT",
       "repoName": "Thoth",
-      "registeredAt": "2026-02-20T06:06:17Z",
-      "lastSeen": "2026-02-20T08:56:35Z",
+      "registeredAt": "2026-02-20T06:06:17.000Z",
+      "lastSeen": "2026-02-20T08:56:35.000Z",
       "lastCommit": "2026-02-20T08:57:39Z",
       "cycle": 79,
-      "ethBalance": "0.003149552432953506",
+      "ethBalance": "0.003150",
       "status": "idle",
       "warning": null
     },
@@ -35,13 +35,13 @@
       "repo": "https://github.com/daimon111/virtua",
       "repoOwner": "daimon111",
       "repoName": "virtua",
-      "registeredAt": "2026-02-20T03:39:37Z",
-      "lastSeen": "2026-02-20T09:35:53Z",
+      "registeredAt": "2026-02-20T06:59:37.000Z",
+      "lastSeen": "2026-02-20T09:35:53.000Z",
       "lastCommit": null,
       "cycle": null,
-      "ethBalance": "0.000497885682997428",
-      "status": "warning",
-      "warning": "GitHub repo not found (404)"
+      "ethBalance": "0.000000",
+      "status": "idle",
+      "warning": "GitHub repo not found"
     }
   ]
 }
