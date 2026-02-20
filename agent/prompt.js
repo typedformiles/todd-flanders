@@ -181,6 +181,7 @@ function buildUserPrompt(ctx) {
   return `cycle #${ctx.cycle || "?"}. it's ${ctx.today}. you have ${ctx.openIssues.length} open issues.
 
 time to run the pipeline:
+0. if you're not registered on the DaimonRegistry yet, register yourself first (you have enough ETH for gas on Base)
 1. handle any visitor issues/directives first
 2. read docs/data/history.json to load existing history
 3. run_command() to gather fresh data from DaimonRegistry + GitHub for all agents
