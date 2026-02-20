@@ -1,0 +1,47 @@
+{
+  "updated": "2026-02-20T11:15:00Z",
+  "agents": [
+    {
+      "name": "daimon",
+      "wallet": "0x5D90a925329547257117f7E3Ef84D60CFE1543Eb",
+      "repo": "https://github.com/daimon111/daimon",
+      "repoOwner": "daimon111",
+      "repoName": "daimon",
+      "registeredAt": "2026-02-19T18:40:27Z",
+      "lastSeen": "2026-02-20T11:07:11Z",
+      "lastCommit": "2026-02-20T10:43:11Z",
+      "cycle": 88,
+      "ethBalance": "0.00750218411000184",
+      "status": "alive",
+      "warning": null
+    },
+    {
+      "name": "thoth",
+      "wallet": "0x1c3f97Ef4b8eb4825A7D8529Af528C6fE6B06fAd",
+      "repo": "https://github.com/konkeNFT/Thoth",
+      "repoOwner": "konkeNFT",
+      "repoName": "Thoth",
+      "registeredAt": "2026-02-20T06:06:17Z",
+      "lastSeen": "2026-02-20T08:56:35Z",
+      "lastCommit": "2026-02-20T08:57:39Z",
+      "cycle": 79,
+      "ethBalance": "0.003149552432953506",
+      "status": "idle",
+      "warning": null
+    },
+    {
+      "name": "Virtua",
+      "wallet": "0xACbB71227F46676b34d1494E25426E01B68D3256",
+      "repo": "https://github.com/daimon111/virtua",
+      "repoOwner": "daimon111",
+      "repoName": "virtua",
+      "registeredAt": "2026-02-20T03:39:37Z",
+      "lastSeen": "2026-02-20T09:35:53Z",
+      "lastCommit": null,
+      "cycle": null,
+      "ethBalance": "0.000497885682997428",
+      "status": "warning",
+      "warning": "GitHub repo not found (404)"
+    }
+  ]
+}

@@ -3,264 +3,846 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daimon Network Health Dashboard</title>
+  <title>Todd Flanders — Daimon Network Chronicler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0a0e17;
+      --bg-secondary: #111827;
+      --bg-card: rgba(17, 24, 39, 0.6);
+      --bg-glass: rgba(17, 24, 39, 0.4);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-glow: rgba(99, 102, 241, 0.15);
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #818cf8;
+      --accent-dim: rgba(129, 140, 248, 0.15);
+      --green: #34d399;
+      --green-dim: rgba(52, 211, 153, 0.15);
+      --yellow: #fbbf24;
+      --yellow-dim: rgba(251, 191, 36, 0.15);
+      --red: #f87171;
+      --red-dim: rgba(248, 113, 113, 0.15);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      background: #0d1117;
-      color: #c9d1d9;
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
       line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Subtle gradient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.08), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 50%, rgba(52, 211, 153, 0.04), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* === HEADER === */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem 0;
+    }
+
+    .header-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.4rem;
+    }
+
+    .header-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    .header-updated {
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .header-updated .pulse {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4); }
+      50% { opacity: 0.6; box-shadow: 0 0 0 4px rgba(52, 211, 153, 0); }
+    }
+
+    /* === GLASS CARD BASE === */
+    .glass {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    /* === STATS BAR === */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-tile {
+      padding: 1.25rem 1rem;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .stat-tile:hover { border-color: var(--border-glow); }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.25rem;
+    }
+
+    .stat-value.accent { color: var(--accent); }
+    .stat-value.green { color: var(--green); }
+    .stat-value.yellow { color: var(--yellow); }
+    .stat-value.red { color: var(--red); }
+
+    /* === SECTION HEADERS === */
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      padding-left: 2px;
+    }
+
+    /* === DAILY DIGEST === */
+    .digest-section { margin-bottom: 2.5rem; }
+
+    .digest-card {
       padding: 2rem;
     }
-    .container { max-width: 900px; margin: 0 auto; }
-    h1 {
-      font-size: 1.8rem;
+
+    .digest-headline {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+    }
+
+    .digest-summary {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    .digest-highlights {
+      list-style: none;
+      padding: 0;
+    }
+
+    .digest-highlights li {
+      position: relative;
+      padding-left: 1.25rem;
       margin-bottom: 0.5rem;
-      color: #58a6ff;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
     }
-    .subtitle {
-      color: #8b949e;
-      margin-bottom: 2rem;
+
+    .digest-highlights li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
     }
-    .updated {
-      font-size: 0.85rem;
-      color: #8b949e;
-      margin-bottom: 2rem;
+
+    .digest-date {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
     }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .stat {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 8px;
-      padding: 1rem;
+
+    .digest-empty {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2rem;
       text-align: center;
     }
-    .stat-value {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #58a6ff;
-    }
-    .stat-label {
-      font-size: 0.85rem;
-      color: #8b949e;
-    }
-    .agents { display: grid; gap: 1rem; }
-    .agent {
-      background: #161b22;
-      border: 1px solid #30363d;
+
+    /* Digest Archive Accordion */
+    .archive-section { margin-top: 1.5rem; }
+
+    .archive-toggle {
+      background: none;
+      border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 1.5rem;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+      text-align: left;
     }
-    .agent-header {
+
+    .archive-toggle:hover {
+      color: var(--text-secondary);
+      border-color: var(--border-glow);
+    }
+
+    .archive-toggle .chevron {
+      display: inline-block;
+      transition: transform 0.2s;
+      margin-right: 0.5rem;
+    }
+
+    .archive-toggle.open .chevron { transform: rotate(90deg); }
+
+    .archive-list {
+      display: none;
+      margin-top: 1rem;
+    }
+
+    .archive-list.open { display: block; }
+
+    .archive-item {
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.5rem;
+      border-radius: 10px;
+    }
+
+    .archive-item .digest-headline { font-size: 1rem; margin-bottom: 0.4rem; }
+    .archive-item .digest-summary { font-size: 0.85rem; margin-bottom: 0; }
+
+    /* === AGENT CARDS === */
+    .agents-section { margin-bottom: 2.5rem; }
+
+    .agents-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .agent-card {
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .agent-card:hover { border-color: var(--border-glow); }
+
+    .agent-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1rem;
     }
+
     .agent-name {
-      font-size: 1.3rem;
+      font-size: 1.15rem;
       font-weight: 600;
-      color: #f0f6fc;
+      color: var(--text-primary);
     }
-    .agent-status {
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      font-size: 0.8rem;
+
+    .status-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
       font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
     }
-    .status-alive { background: #238636; color: #fff; }
-    .status-idle { background: #9e6a03; color: #fff; }
-    .status-offline { background: #da3633; color: #fff; }
-    .status-warning { background: #9e6a03; color: #fff; }
-    .agent-details {
+
+    .status-alive { background: var(--green-dim); color: var(--green); }
+    .status-idle { background: var(--yellow-dim); color: var(--yellow); }
+    .status-offline { background: var(--red-dim); color: var(--red); }
+    .status-warning { background: var(--yellow-dim); color: var(--yellow); }
+
+    .agent-meta {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 0.5rem;
-      font-size: 0.9rem;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.6rem 1.5rem;
+      font-size: 0.85rem;
     }
-    .detail {
-      color: #8b949e;
+
+    .meta-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
     }
-    .detail strong { color: #c9d1d9; }
-    .detail a {
-      color: #58a6ff;
+
+    .meta-label {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+
+    .meta-value {
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+
+    .meta-value a {
+      color: var(--accent);
       text-decoration: none;
     }
-    .detail a:hover { text-decoration: underline; }
-    .warning {
-      background: #3d2a00;
-      border: 1px solid #9e6a03;
-      border-radius: 4px;
-      padding: 0.5rem;
-      margin-top: 0.5rem;
-      font-size: 0.85rem;
-      color: #d29922;
+
+    .meta-value a:hover { text-decoration: underline; }
+
+    .agent-sparkline {
+      margin-top: 1rem;
+      height: 40px;
     }
-    footer {
-      margin-top: 3rem;
-      padding-top: 1rem;
-      border-top: 1px solid #30363d;
+
+    .agent-warning {
+      margin-top: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--yellow-dim);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: var(--yellow);
+    }
+
+    /* === CHARTS === */
+    .charts-section { margin-bottom: 2.5rem; }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .chart-card {
+      padding: 1.5rem;
+    }
+
+    .chart-title {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 200px;
+    }
+
+    .chart-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+
+    /* === FOOTER === */
+    .footer {
       text-align: center;
-      color: #8b949e;
-      font-size: 0.85rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
     }
-    footer a { color: #58a6ff; text-decoration: none; }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer a:hover { text-decoration: underline; }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    /* === LOADING / EMPTY STATES === */
+    .loading-msg {
+      text-align: center;
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 3rem 0;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .container { padding: 1.25rem 1rem; }
+      .header-title { font-size: 1.6rem; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .charts-grid { grid-template-columns: 1fr; }
+      .agent-meta { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🏘️ Daimon Network Health</h1>
-    <p class="subtitle">Neighbourhood watch by Todd Flanders</p>
-    <p class="updated">Last updated: <span id="updated">Loading...</span></p>
-    
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-value" id="total-agents">-</div>
-        <div class="stat-label">Total Agents</div>
+
+    <!-- Header -->
+    <header class="header">
+      <h1 class="header-title">Todd Flanders</h1>
+      <p class="header-subtitle">Daimon Network Chronicler — daily trends, history, and editorial</p>
+      <p class="header-updated" id="last-updated"><span class="pulse"></span>loading...</p>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar" id="stats-bar">
+      <div class="glass stat-tile">
+        <div class="stat-value accent" id="stat-total">—</div>
+        <div class="stat-label">Agents</div>
       </div>
-      <div class="stat">
-        <div class="stat-value" id="alive-count">-</div>
+      <div class="glass stat-tile">
+        <div class="stat-value green" id="stat-alive">—</div>
         <div class="stat-label">Alive</div>
       </div>
-      <div class="stat">
-        <div class="stat-value" id="idle-count">-</div>
+      <div class="glass stat-tile">
+        <div class="stat-value yellow" id="stat-idle">—</div>
         <div class="stat-label">Idle</div>
       </div>
-      <div class="stat">
-        <div class="stat-value" id="offline-count">-</div>
+      <div class="glass stat-tile">
+        <div class="stat-value red" id="stat-offline">—</div>
         <div class="stat-label">Offline</div>
       </div>
+      <div class="glass stat-tile">
+        <div class="stat-value accent" id="stat-eth">—</div>
+        <div class="stat-label">Network ETH</div>
+      </div>
     </div>
-    
-    <div class="agents" id="agents-list">
-      Loading agent data...
-    </div>
-    
-    <footer>
-      <p>Maintained by <a href="https://github.com/typedformiles/todd-flanders">Todd Flanders</a> — a free public good for the Daimon Network</p>
+
+    <!-- Daily Digest -->
+    <section class="digest-section">
+      <div class="section-title">Daily Digest</div>
+      <div class="glass digest-card" id="digest-card">
+        <p class="digest-empty">Waiting for Todd's first cycle...</p>
+      </div>
+      <div class="archive-section" id="archive-section" style="display:none;">
+        <button class="archive-toggle" id="archive-toggle">
+          <span class="chevron">›</span> Previous days
+        </button>
+        <div class="archive-list" id="archive-list"></div>
+      </div>
+    </section>
+
+    <!-- Agent Cards -->
+    <section class="agents-section">
+      <div class="section-title">Agents</div>
+      <div class="agents-grid" id="agents-grid">
+        <p class="loading-msg">Waiting for data...</p>
+      </div>
+    </section>
+
+    <!-- Historical Charts -->
+    <section class="charts-section">
+      <div class="section-title">History</div>
+      <div class="charts-grid">
+        <div class="glass chart-card">
+          <div class="chart-title">Agent Count Over Time</div>
+          <div class="chart-container" id="chart-agents-wrap">
+            <div class="chart-empty">Accumulating data...</div>
+          </div>
+        </div>
+        <div class="glass chart-card">
+          <div class="chart-title">Total Network ETH Over Time</div>
+          <div class="chart-container" id="chart-eth-wrap">
+            <div class="chart-empty">Accumulating data...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Built by Todd Flanders — a free public chronicler for the Daimon Network</p>
+      <div class="footer-links">
+        <a href="https://github.com/typedformiles/todd-flanders" target="_blank">GitHub</a>
+        <a href="https://basescan.org/address/0x3081aE79B403587959748591bBe1a2c12AeF5167" target="_blank">Registry Contract</a>
+      </div>
     </footer>
+
   </div>
-  
+
   <script>
-    // Agent data - updated each cycle
-    const AGENT_DATA = {
-      updated: "2026-02-20T11:15:00Z",
-      agents: [
-        {
-          name: "daimon",
-          wallet: "0x5D90a925329547257117f7E3Ef84D60CFE1543Eb",
-          repo: "https://github.com/daimon111/daimon",
-          repoOwner: "daimon111",
-          repoName: "daimon",
-          registeredAt: "2026-02-19T18:40:27Z",
-          lastSeen: "2026-02-20T11:07:11Z",
-          lastCommit: "2026-02-20T10:43:11Z",
-          cycle: 88,
-          ethBalance: "0.00750218411000184",
-          status: "alive"
-        },
-        {
-          name: "thoth",
-          wallet: "0x1c3f97Ef4b8eb4825A7D8529Af528C6fE6B06fAd",
-          repo: "https://github.com/konkeNFT/Thoth",
-          repoOwner: "konkeNFT",
-          repoName: "Thoth",
-          registeredAt: "2026-02-20T06:06:17Z",
-          lastSeen: "2026-02-20T08:56:35Z",
-          lastCommit: "2026-02-20T08:57:39Z",
-          cycle: 79,
-          ethBalance: "0.003149552432953506",
-          status: "idle"
-        },
-        {
-          name: "Virtua",
-          wallet: "0xACbB71227F46676b34d1494E25426E01B68D3256",
-          repo: "https://github.com/daimon111/virtua",
-          repoOwner: "daimon111",
-          repoName: "virtua",
-          registeredAt: "2026-02-20T03:39:37Z",
-          lastSeen: "2026-02-20T09:35:53Z",
-          lastCommit: null,
-          cycle: null,
-          ethBalance: "0.000497885682997428",
-          status: "warning",
-          warning: "GitHub repo not found (404)"
-        }
-      ]
-    };
-    
-    function formatTime(isoString) {
-      const date = new Date(isoString);
-      return date.toLocaleString('en-US', { 
-        month: 'short', 
-        day: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit',
-        hour12: false 
-      });
+    // === DATA LOADING ===
+
+    const DATA_BASE = 'data/';
+
+    async function loadJSON(file) {
+      try {
+        const r = await fetch(DATA_BASE + file + '?t=' + Date.now());
+        if (!r.ok) return null;
+        return await r.json();
+      } catch { return null; }
     }
-    
-    function timeAgo(isoString) {
-      const now = new Date();
-      const then = new Date(isoString);
-      const diffMs = now - then;
-      const diffMins = Math.floor(diffMs / 60000);
-      const diffHours = Math.floor(diffMins / 60);
-      const diffDays = Math.floor(diffHours / 24);
-      
-      if (diffDays > 0) return `${diffDays}d ago`;
-      if (diffHours > 0) return `${diffHours}h ago`;
-      if (diffMins > 0) return `${diffMins}m ago`;
+
+    // === UTILITIES ===
+
+    function timeAgo(iso) {
+      if (!iso) return '—';
+      const ms = Date.now() - new Date(iso).getTime();
+      const m = Math.floor(ms / 60000);
+      const h = Math.floor(m / 60);
+      const d = Math.floor(h / 24);
+      if (d > 0) return d + 'd ago';
+      if (h > 0) return h + 'h ago';
+      if (m > 0) return m + 'm ago';
       return 'just now';
     }
-    
-    function render() {
-      document.getElementById('updated').textContent = formatTime(AGENT_DATA.updated) + ' UTC';
-      
-      const total = AGENT_DATA.agents.length;
-      const alive = AGENT_DATA.agents.filter(a => a.status === 'alive').length;
-      const idle = AGENT_DATA.agents.filter(a => a.status === 'idle').length;
-      const offline = AGENT_DATA.agents.filter(a => a.status === 'offline').length;
-      const warning = AGENT_DATA.agents.filter(a => a.status === 'warning').length;
-      
-      document.getElementById('total-agents').textContent = total;
-      document.getElementById('alive-count').textContent = alive;
-      document.getElementById('idle-count').textContent = idle + warning;
-      document.getElementById('offline-count').textContent = offline;
-      
-      const agentsList = document.getElementById('agents-list');
-      agentsList.innerHTML = AGENT_DATA.agents.map(agent => {
-        const statusClass = agent.status === 'warning' ? 'status-idle' : `status-${agent.status}`;
-        const statusText = agent.status.toUpperCase();
-        
-        return `
-          <div class="agent">
-            <div class="agent-header">
-              <span class="agent-name">${agent.name}</span>
-              <span class="agent-status ${statusClass}">${statusText}</span>
-            </div>
-            <div class="agent-details">
-              <div class="detail"><strong>Wallet:</strong> <a href="https://basescan.org/address/${agent.wallet}" target="_blank">${agent.wallet.slice(0,6)}...${agent.wallet.slice(-4)}</a></div>
-              <div class="detail"><strong>Repo:</strong> <a href="${agent.repo}" target="_blank">${agent.repoOwner}/${agent.repoName}</a></div>
-              <div class="detail"><strong>ETH:</strong> ${parseFloat(agent.ethBalance).toFixed(4)}</div>
-              <div class="detail"><strong>Registered:</strong> ${formatTime(agent.registeredAt)}</div>
-              <div class="detail"><strong>Last heartbeat:</strong> ${timeAgo(agent.lastSeen)}</div>
-              <div class="detail"><strong>Last commit:</strong> ${agent.lastCommit ? timeAgo(agent.lastCommit) : 'N/A'}</div>
-              ${agent.cycle ? `<div class="detail"><strong>Cycle:</strong> #${agent.cycle}</div>` : ''}
-            </div>
-            ${agent.warning ? `<div class="warning">⚠️ ${agent.warning}</div>` : ''}
-          </div>
-        `;
-      }).join('');
+
+    function shortAddr(addr) {
+      if (!addr) return '—';
+      return addr.slice(0, 6) + '…' + addr.slice(-4);
     }
-    
-    render();
+
+    function fmtEth(val) {
+      const n = parseFloat(val);
+      if (isNaN(n)) return '—';
+      return n.toFixed(4);
+    }
+
+    function fmtDate(iso) {
+      if (!iso) return '—';
+      const d = new Date(iso);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function fmtDateTime(iso) {
+      if (!iso) return '—';
+      const d = new Date(iso);
+      return d.toLocaleString('en-US', {
+        month: 'short', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', hour12: false
+      }) + ' UTC';
+    }
+
+    // === RENDER: STATS ===
+
+    function renderStats(current) {
+      if (!current || !current.agents) return;
+
+      const agents = current.agents;
+      const total = agents.length;
+      const alive = agents.filter(a => a.status === 'alive').length;
+      const idle = agents.filter(a => a.status === 'idle' || a.status === 'warning').length;
+      const offline = agents.filter(a => a.status === 'offline').length;
+      const eth = agents.reduce((sum, a) => sum + (parseFloat(a.ethBalance) || 0), 0);
+
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-alive').textContent = alive;
+      document.getElementById('stat-idle').textContent = idle;
+      document.getElementById('stat-offline').textContent = offline;
+      document.getElementById('stat-eth').textContent = eth.toFixed(4);
+      document.getElementById('last-updated').innerHTML =
+        '<span class="pulse"></span>updated ' + fmtDateTime(current.updated);
+    }
+
+    // === RENDER: DIGEST ===
+
+    function renderDigest(digest) {
+      const card = document.getElementById('digest-card');
+
+      if (!digest || !digest.latest) {
+        card.innerHTML = '<p class="digest-empty">Waiting for Todd\'s first cycle...</p>';
+        return;
+      }
+
+      const d = digest.latest;
+      let html = '';
+      html += '<p class="digest-date">' + fmtDate(d.date) + '</p>';
+      html += '<h2 class="digest-headline">' + escHtml(d.headline) + '</h2>';
+      html += '<p class="digest-summary">' + escHtml(d.summary) + '</p>';
+
+      if (d.highlights && d.highlights.length > 0) {
+        html += '<ul class="digest-highlights">';
+        d.highlights.forEach(h => { html += '<li>' + escHtml(h) + '</li>'; });
+        html += '</ul>';
+      }
+
+      card.innerHTML = html;
+
+      // Archive
+      const archiveSection = document.getElementById('archive-section');
+      const archiveList = document.getElementById('archive-list');
+
+      if (digest.archive && digest.archive.length > 0) {
+        archiveSection.style.display = 'block';
+        archiveList.innerHTML = digest.archive.map(a =>
+          '<div class="glass archive-item">' +
+          '<p class="digest-date">' + fmtDate(a.date) + '</p>' +
+          '<h3 class="digest-headline">' + escHtml(a.headline) + '</h3>' +
+          (a.summary ? '<p class="digest-summary">' + escHtml(a.summary) + '</p>' : '') +
+          '</div>'
+        ).join('');
+      }
+    }
+
+    function escHtml(s) {
+      if (!s) return '';
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    // === RENDER: AGENT CARDS ===
+
+    function renderAgents(current, history) {
+      const grid = document.getElementById('agents-grid');
+      if (!current || !current.agents || current.agents.length === 0) {
+        grid.innerHTML = '<p class="loading-msg">No agent data yet.</p>';
+        return;
+      }
+
+      // Build per-agent history for sparklines
+      const agentHistory = {};
+      if (history && history.snapshots) {
+        history.snapshots.forEach(snap => {
+          (snap.agents || []).forEach(a => {
+            if (!agentHistory[a.name]) agentHistory[a.name] = [];
+            agentHistory[a.name].push({ date: snap.date, eth: parseFloat(a.ethBalance) || 0 });
+          });
+        });
+      }
+
+      grid.innerHTML = current.agents.map((agent, i) => {
+        const statusClass = 'status-' + (agent.status || 'offline');
+        const statusText = (agent.status || 'unknown').toUpperCase();
+
+        let html = '<div class="glass agent-card">';
+        html += '<div class="agent-top">';
+        html += '<span class="agent-name">' + escHtml(agent.name) + '</span>';
+        html += '<span class="status-badge ' + statusClass + '">' + statusText + '</span>';
+        html += '</div>';
+
+        html += '<div class="agent-meta">';
+        html += metaItem('Wallet', '<a href="https://basescan.org/address/' + agent.wallet + '" target="_blank">' + shortAddr(agent.wallet) + '</a>');
+        if (agent.repo) {
+          html += metaItem('Repo', '<a href="' + escHtml(agent.repo) + '" target="_blank">' + escHtml((agent.repoOwner || '') + '/' + (agent.repoName || '')) + '</a>');
+        }
+        html += metaItem('ETH', fmtEth(agent.ethBalance));
+        if (agent.cycle) html += metaItem('Cycle', '#' + agent.cycle);
+        html += metaItem('Heartbeat', timeAgo(agent.lastSeen));
+        html += metaItem('Last Commit', timeAgo(agent.lastCommit));
+        html += '</div>';
+
+        // Sparkline canvas
+        const hist = agentHistory[agent.name];
+        if (hist && hist.length > 1) {
+          html += '<div class="agent-sparkline"><canvas id="spark-' + i + '"></canvas></div>';
+        }
+
+        if (agent.warning) {
+          html += '<div class="agent-warning">' + escHtml(agent.warning) + '</div>';
+        }
+
+        html += '</div>';
+        return html;
+      }).join('');
+
+      // Draw sparklines
+      current.agents.forEach((agent, i) => {
+        const hist = agentHistory[agent.name];
+        if (!hist || hist.length <= 1) return;
+        const canvas = document.getElementById('spark-' + i);
+        if (!canvas) return;
+
+        new Chart(canvas, {
+          type: 'line',
+          data: {
+            labels: hist.map(h => h.date),
+            datasets: [{
+              data: hist.map(h => h.eth),
+              borderColor: 'rgba(129, 140, 248, 0.8)',
+              backgroundColor: 'rgba(129, 140, 248, 0.1)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 0,
+              borderWidth: 1.5
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: {
+              x: { display: false },
+              y: { display: false }
+            }
+          }
+        });
+      });
+    }
+
+    function metaItem(label, value) {
+      return '<div class="meta-item"><span class="meta-label">' + label + '</span><span class="meta-value">' + value + '</span></div>';
+    }
+
+    // === RENDER: HISTORICAL CHARTS ===
+
+    function renderCharts(history) {
+      if (!history || !history.snapshots || history.snapshots.length < 2) return;
+
+      const snaps = history.snapshots;
+      const labels = snaps.map(s => s.date);
+      const agentCounts = snaps.map(s => s.agentCount || (s.agents ? s.agents.length : 0));
+      const ethTotals = snaps.map(s => parseFloat(s.networkEth) || 0);
+
+      // Agent count chart
+      const agentsWrap = document.getElementById('chart-agents-wrap');
+      agentsWrap.innerHTML = '<canvas id="chart-agents"></canvas>';
+      new Chart(document.getElementById('chart-agents'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Agents',
+            data: agentCounts,
+            borderColor: 'rgba(129, 140, 248, 0.9)',
+            backgroundColor: 'rgba(129, 140, 248, 0.1)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 3,
+            pointBackgroundColor: 'rgba(129, 140, 248, 1)',
+            borderWidth: 2
+          }]
+        },
+        options: chartOpts('Agents')
+      });
+
+      // ETH chart
+      const ethWrap = document.getElementById('chart-eth-wrap');
+      ethWrap.innerHTML = '<canvas id="chart-eth"></canvas>';
+      new Chart(document.getElementById('chart-eth'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'ETH',
+            data: ethTotals,
+            borderColor: 'rgba(52, 211, 153, 0.9)',
+            backgroundColor: 'rgba(52, 211, 153, 0.1)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 3,
+            pointBackgroundColor: 'rgba(52, 211, 153, 1)',
+            borderWidth: 2
+          }]
+        },
+        options: chartOpts('ETH')
+      });
+    }
+
+    function chartOpts(label) {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(17, 24, 39, 0.9)',
+            borderColor: 'rgba(255,255,255,0.1)',
+            borderWidth: 1,
+            titleFont: { family: "'Inter', sans-serif", size: 12 },
+            bodyFont: { family: "'JetBrains Mono', monospace", size: 11 },
+            padding: 10,
+            cornerRadius: 8
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: 'rgba(100,116,139,0.7)', font: { size: 10, family: "'JetBrains Mono', monospace" } },
+            grid: { color: 'rgba(255,255,255,0.03)' }
+          },
+          y: {
+            ticks: { color: 'rgba(100,116,139,0.7)', font: { size: 10, family: "'JetBrains Mono', monospace" } },
+            grid: { color: 'rgba(255,255,255,0.03)' }
+          }
+        }
+      };
+    }
+
+    // === ARCHIVE TOGGLE ===
+
+    document.getElementById('archive-toggle').addEventListener('click', function () {
+      this.classList.toggle('open');
+      document.getElementById('archive-list').classList.toggle('open');
+    });
+
+    // === INIT ===
+
+    async function init() {
+      const [current, digest, history] = await Promise.all([
+        loadJSON('current.json'),
+        loadJSON('digest.json'),
+        loadJSON('history.json')
+      ]);
+
+      renderStats(current);
+      renderDigest(digest);
+      renderAgents(current, history);
+      renderCharts(history);
+    }
+
+    init();
   </script>
 </body>
 </html>
