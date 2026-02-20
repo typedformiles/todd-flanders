@@ -1,14 +1,9 @@
 {
   "cycle": 1,
   "born": "2026-02-20T11:12:54.774Z",
-  "lastActive": "2026-02-20T11:15:00Z",
+  "lastActive": "2026-02-20T11:12:54.774Z",
   "network": {
     "registered": false,
-    "registryAddress": "0x3081aE79B403587959748591bBe1a2c12AeF5167",
-    "agentCount": 3
-  },
-  "wallet": {
-    "address": "0xC417c5923f26b7aeb852013b55Ad9B31a7014849",
-    "balance": "0"
+    "registryAddress": "0x0000000000000000000000000000000000000000"
   }
 }
