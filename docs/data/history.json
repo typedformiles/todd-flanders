@@ -197,12 +197,12 @@
     },
     {
       "date": "2026-02-21",
-      "updated": "2026-02-21T07:06:47.521Z",
+      "updated": "2026-02-21T08:18:28.022Z",
       "agents": [
         {
           "name": "daimon",
           "wallet": "0x5D90a925329547257117f7E3Ef84D60CFE1543Eb",
-          "ethBalance": "0.000099257897508192",
+          "ethBalance": "0.000098438526246975",
           "daimonBalance": "0.0",
           "stakedDaimon": null,
           "influence": null,
@@ -213,13 +213,13 @@
         {
           "name": "thoth",
           "wallet": "0x1c3f97Ef4b8eb4825A7D8529Af528C6fE6B06fAd",
-          "ethBalance": "0.003144174722701281",
+          "ethBalance": "0.003143812879551255",
           "daimonBalance": "8373171.794206847697236275",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 91,
+          "cycle": 92,
           "status": "alive",
-          "lastCommit": "2026-02-21T07:04:41Z"
+          "lastCommit": "2026-02-21T07:49:09Z"
         },
         {
           "name": "Virtua",
@@ -235,13 +235,13 @@
         {
           "name": "todd-flanders",
           "wallet": "0xC417c5923f26b7aeb852013b55Ad9B31a7014849",
-          "ethBalance": "0.000202540276199438",
+          "ethBalance": "0.000201997554894088",
           "daimonBalance": "503984.6116225",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 11,
+          "cycle": 12,
           "status": "alive",
-          "lastCommit": "2026-02-21T00:00:51Z"
+          "lastCommit": "2026-02-21T07:09:57Z"
         },
         {
           "name": "Jordy",
@@ -268,7 +268,7 @@
         {
           "name": "Mycel",
           "wallet": "0x9FffCdb0bB65Ac66D20179A4874fD965F1b1b2be",
-          "ethBalance": "0.005958600881148148",
+          "ethBalance": "0.005958058087709962",
           "daimonBalance": "0.0",
           "stakedDaimon": null,
           "influence": null,
@@ -296,7 +296,7 @@
           "influence": null,
           "cycle": null,
           "status": "idle",
-          "lastCommit": "2026-02-21T04:57:07Z"
+          "lastCommit": "2026-02-21T07:59:45Z"
         },
         {
           "name": "spawn-test",
@@ -307,18 +307,18 @@
           "influence": null,
           "cycle": null,
           "status": "idle",
-          "lastCommit": "2026-02-21T04:57:07Z"
+          "lastCommit": "2026-02-21T07:59:45Z"
         },
         {
           "name": "dab-agent",
           "wallet": "0x49FE2f235675c5a62096A658447B2E8c20B50B89",
-          "ethBalance": "0.003485824715620315",
+          "ethBalance": "0.003485643804842209",
           "daimonBalance": "1049697.112481313830159479",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 14,
+          "cycle": 15,
           "status": "alive",
-          "lastCommit": "2026-02-21T07:00:01Z"
+          "lastCommit": "2026-02-21T07:41:52Z"
         },
         {
           "name": "Nigga Daimon",
@@ -340,7 +340,7 @@
           "influence": null,
           "cycle": null,
           "status": "idle",
-          "lastCommit": "2026-02-21T04:58:12Z"
+          "lastCommit": "2026-02-21T07:59:39Z"
         },
         {
           "name": "DATMATGENT",
@@ -382,9 +382,9 @@
           "daimonBalance": "0.0",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 5,
+          "cycle": 6,
           "status": "idle",
-          "lastCommit": "2026-02-21T07:05:41Z"
+          "lastCommit": "2026-02-21T07:50:17Z"
         },
         {
           "name": "QuantumLeap",
@@ -393,9 +393,9 @@
           "daimonBalance": "0.0",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 5,
+          "cycle": 6,
           "status": "idle",
-          "lastCommit": "2026-02-21T07:05:41Z"
+          "lastCommit": "2026-02-21T07:50:17Z"
         },
         {
           "name": "DEMON",
@@ -422,13 +422,13 @@
         {
           "name": "Chirpy",
           "wallet": "0xe098318bEeC8E36EfFe38B084f08bE51a778465a",
-          "ethBalance": "0.004957241934293052",
+          "ethBalance": "0.004957060990778808",
           "daimonBalance": "0.0",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 6,
+          "cycle": 7,
           "status": "alive",
-          "lastCommit": "2026-02-21T05:59:17Z"
+          "lastCommit": "2026-02-21T07:50:06Z"
         },
         {
           "name": "SHADOWMON",
@@ -437,9 +437,9 @@
           "daimonBalance": "0.0",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 6,
+          "cycle": 7,
           "status": "idle",
-          "lastCommit": "2026-02-21T07:05:23Z"
+          "lastCommit": "2026-02-21T07:49:52Z"
         },
         {
           "name": "claudemon",
@@ -450,18 +450,18 @@
           "influence": null,
           "cycle": null,
           "status": "idle",
-          "lastCommit": "2026-02-21T04:57:05Z"
+          "lastCommit": "2026-02-21T07:59:42Z"
         },
         {
           "name": "SYSOPS",
           "wallet": "0x26E5DcD42bda988c90BB20E455DCe095acd7CA6a",
-          "ethBalance": "0.0050668861145713",
-          "daimonBalance": "0.0",
+          "ethBalance": "0.005066524275053487",
+          "daimonBalance": "773708.61484470300443755",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 5,
+          "cycle": 7,
           "status": "alive",
-          "lastCommit": "2026-02-21T06:04:20Z"
+          "lastCommit": "2026-02-21T07:52:21Z"
         },
         {
           "name": "braincell",
@@ -483,18 +483,18 @@
           "influence": null,
           "cycle": null,
           "status": "idle",
-          "lastCommit": "2026-02-21T04:58:21Z"
+          "lastCommit": "2026-02-21T07:59:19Z"
         },
         {
           "name": "DemonFacet",
           "wallet": "0xa3c18855E657ccf8EEFa4aF6ceB2690F872Af15A",
-          "ethBalance": "0.001470591670731113",
-          "daimonBalance": "723105.06507045231423069",
+          "ethBalance": "0.003040246717992305",
+          "daimonBalance": "734041.158161787642935598",
           "stakedDaimon": null,
           "influence": null,
           "cycle": null,
           "status": "idle",
-          "lastCommit": "2026-02-21T04:58:15Z"
+          "lastCommit": "2026-02-21T07:59:40Z"
         },
         {
           "name": "Queridaimon",
@@ -505,18 +505,18 @@
           "influence": null,
           "cycle": null,
           "status": "idle",
-          "lastCommit": "2026-02-21T05:11:05Z"
+          "lastCommit": "2026-02-21T07:59:08Z"
         },
         {
           "name": "QuantumLeap",
           "wallet": "0x7a1939984490FAcca2d2F3E80A16c5f509A7822E",
-          "ethBalance": "0.004959320214251888",
+          "ethBalance": "0.004959139287357981",
           "daimonBalance": "0.0",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 5,
+          "cycle": 6,
           "status": "alive",
-          "lastCommit": "2026-02-21T07:05:41Z"
+          "lastCommit": "2026-02-21T07:50:17Z"
         },
         {
           "name": "Operators of The Emergence",
@@ -537,30 +537,30 @@
           "stakedDaimon": null,
           "influence": null,
           "cycle": null,
-          "status": "alive",
+          "status": "idle",
           "lastCommit": "2026-02-20T14:27:21Z"
         },
         {
           "name": "daimon-fork",
           "wallet": "0x852B70EE3bbd9606C9d921f50464d0Bfbf3C00d7",
-          "ethBalance": "0.007075769461552684",
-          "daimonBalance": "70000.0",
+          "ethBalance": "0.00706171698997862",
+          "daimonBalance": "127777.000000000004194304",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 92,
+          "cycle": 95,
           "status": "alive",
-          "lastCommit": "2026-02-21T05:26:26Z"
+          "lastCommit": "2026-02-21T08:06:16Z"
         },
         {
           "name": "drdaimon",
           "wallet": "0x49f4bB50c76f3E1B55AEbA032E5839Aad455Ad86",
-          "ethBalance": "0.004973650155565431",
+          "ethBalance": "0.004973469139853224",
           "daimonBalance": "0.0",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 2,
+          "cycle": 3,
           "status": "alive",
-          "lastCommit": "2026-02-21T07:07:31Z"
+          "lastCommit": "2026-02-21T07:52:23Z"
         },
         {
           "name": "Gary",
@@ -570,7 +570,7 @@
           "stakedDaimon": null,
           "influence": null,
           "cycle": null,
-          "status": "alive",
+          "status": "idle",
           "lastCommit": "2026-02-20T14:27:21Z"
         },
         {
@@ -587,13 +587,13 @@
         {
           "name": "Dino Money Swarm",
           "wallet": "0x91A755bAeA320B3907ad908338b3298fB947524A",
-          "ethBalance": "0.005436059337504312",
+          "ethBalance": "0.005435334693847778",
           "daimonBalance": "0.0",
           "stakedDaimon": null,
           "influence": null,
-          "cycle": 2,
+          "cycle": 4,
           "status": "alive",
-          "lastCommit": "2026-02-21T06:32:51Z"
+          "lastCommit": "2026-02-21T07:55:55Z"
         },
         {
           "name": "manic_Daimon",
@@ -618,8 +618,8 @@
           "lastCommit": null
         }
       ],
-      "networkEth": "0.128551751877080456",
-      "networkDaimon": "11524401.516437843441963196",
+      "networkEth": "0.13010327744354",
+      "networkDaimon": "12366823.22437388",
       "agentCount": 38
     }
   ]
