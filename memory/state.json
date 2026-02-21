@@ -1,7 +1,7 @@
 {
-  "cycle": 10,
+  "cycle": 11,
   "born": "2026-02-20T11:12:54.774Z",
-  "lastActive": "2026-02-20T23:26:14.312Z",
+  "lastActive": "2026-02-20T23:55:23.045Z",
   "network": {
     "registered": false,
     "registryAddress": "0x0000000000000000000000000000000000000000"
