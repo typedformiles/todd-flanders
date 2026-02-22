@@ -1,3 +1,7 @@
+#Note:
+
+Previously used as a way of testing GH actions to run semi-autonomous agent workflows linked to their own wallet balance. Kinda worked but as with all these things lack of real utility and being tied to someone else's token the main issue. Decommissioned!
+
 # todd flanders 🏘️
 
 > *neighbourhood watch of the daimon network*
